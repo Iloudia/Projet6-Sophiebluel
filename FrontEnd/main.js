@@ -1,5 +1,7 @@
+const buttons = document.querySelectorAll('.filter-button');
+const gallery = document.querySelectorAll('.gallery');
+
 document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.filter-button');
     const figures = document.querySelectorAll('.gallery figure');
 
     buttons.forEach(button => {
@@ -19,3 +21,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 });
+
+
+const getWorks = async () => {
+    const reponse = await fetch ('http://localhost:5678/api/works');
+    works = await reponse.json();
+    displayWorks();
+}
+
+const displayWorks = () => {
+    works.forEach(work => {
+        const figure = document.createElement('figure');
+        figure.setAttribute('data-category', work.category.id);
+
+        figure.innerHTML = `
+        <img src="${work.imageUrl}" alt="${work.title}">
+        <figcaption>${work.title}</figcaption>
+        `;
+
+        gallery.appendChild(figure);
+    })
+}
+
+getWorks();

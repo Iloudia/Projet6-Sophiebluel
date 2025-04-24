@@ -44,3 +44,17 @@ const displayWorks = () => {
 }
 
 getWorks();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const editButtons = document.getElementById('.edit-button');
+    const filters = document.getElementById('filters');
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        if (editButton) editButton.style.display = 'none';
+    } else {
+        if (filters) filters.style.display = 'none';
+    }
+});
+
+

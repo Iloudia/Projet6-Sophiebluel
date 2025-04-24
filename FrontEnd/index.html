@@ -9,6 +9,8 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 
 </head>
 <body>
@@ -36,8 +38,14 @@
 		</article>
 	</section>
 	<section id="portfolio">
+		<div class="portfolio-title">
 		<h2>Mes Projets</h2>
-		<div class="filters">
+		<button class="edit-button" id="edit-button">
+		<i class="fa-regular fa-pen-to-square"></i>
+		Modifier
+		</button>
+	</div>
+		<div class="filters" id="filters">
 			<button class="filter-button" data-category="0">Tous</button>
 			<button class="filter-button" data-category="1">Objets</button>
 			<button class="filter-button" data-category="2">Appartements</button>

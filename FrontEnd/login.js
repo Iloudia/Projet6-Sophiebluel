@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.login-form');
+    const errorMsg = document.querySelector('.login-error');
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (!email || !password) {
+            showError("Veuillez remplir tous les champs.");
+            return;
+        }
 
         try {
             const response = await fetch('http://localhost:5678/api/users/login', {
@@ -12,10 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, password})
+                body: JSON.stringify({ email, password })
             });
 
             const data = await response.json();
+
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 window.location.href = 'index.html';
@@ -28,17 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function showError (message) {
-        let errorMsg = document.querySelector('.login-error');
-        if (!errorMsg) {
-            errorMsg = document.createElement('p');
-            errorMsg.classList.add('login-error');
-            form.appendChild(errorMsg);
-            
-        }
+    function showError(message) {
         errorMsg.textContent = message;
-        errorMsg.classList.add('visible');
+        errorMsg.style.display = 'block';
     }
 });
-
-

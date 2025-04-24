@@ -22,6 +22,8 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	text-decoration: none;
+	color: inherit;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
@@ -180,6 +182,64 @@ li:hover {
 	width: 100%;
 
 }
+
+.hidden {
+	display: none;
+}
+
+.popup-container {
+	position: fixed;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	place-items: center;
+}
+
+.popup-content {
+	background-color: #fff;
+	padding: 20px;
+	width: 80%;
+	top: 30%;
+	max-width: 30em;
+	max-height: 90%;
+	border-radius: 0.5em;
+}
+.close-popup {
+	top: 1em;
+	right: 1em;
+	cursor: pointer;
+
+	
+}
+.popup-title{
+	text-align: center;
+	font-size: 16px;
+}
+.popup-gallery {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-template-rows: repeat(3,auto);
+	margin-top: 20px;
+	width: fit-content;
+}
+
+.popup-gallery img {
+	object-fit: cover;
+	max-width: 5em;
+	max-height: 5em;
+	margin: 10px;
+}
+
+.popup-content button {
+	color: #fff;
+	border: none;
+	background-color: #1D6154;
+	cursor: pointer;
+	border-radius: 2em;
+	margin-top: 3em;
+	padding: 1em 3em;
+}
+
 #contact {
 	width: 50%;
 margin: auto;

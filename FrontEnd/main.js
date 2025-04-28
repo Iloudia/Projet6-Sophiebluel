@@ -86,6 +86,14 @@ function populatePopupGallery() {
 }
 
 
+const addPhotoButton = document.getElementById('add-photo-button');
+const popupGalleryPage = document.getElementById('popup-gallery-page');
+const popupAddPhotopage = document.getElementById('popup-add-photo-page');
+
+addPhotoButton.addEventListener('click', function() {
+    popupGalleryPage.classList.add('hidden');
+    popupAddPhotopage.classList.remove('hidden');
+});
 
 
 

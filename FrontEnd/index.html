@@ -18,8 +18,8 @@
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li>projets</li>
-			<li>contact</li>
+			<li><a href="#portfolio">projets</a></li>
+			<li><a href="#contact">contact</a></li>
 			<li><a href="login.html">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
@@ -75,11 +75,28 @@
 		<span class="close-popup">&times;</span>
 		<h3 class="popup-title">Galerie photo</h3>
 		<div class="popup-gallery" id="popup-gallery">
-
 		</div>
+		<div class="popup-line"></div>
 		<button>Ajouter une photo</button>
 	</div>
 </div>
+
+<div id="popup-add-photo-page hidden" >
+	<h3 class="popup-title">Ajout photo</h3>
+	<form id="add-photo-form">
+		<div class="form-container">
+			<label for="photo-title">Titre</label>
+			<input type="text" id="photo-title" name="photo-title" required>
+		</div>
+
+		<div class="form-group">
+			<label for="photo-category">Catégorie</label>
+			
+		</div>
+	</form>
+</div>
+
+
 
 <footer>
 	<nav>

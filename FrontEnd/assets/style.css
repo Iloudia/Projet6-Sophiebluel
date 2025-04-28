@@ -190,44 +190,59 @@ li:hover {
 .popup-container {
 	position: fixed;
 	inset: 0;
-	width: 100vw;
-	height: 100vh;
+	width: 100%;
+	height: 100%;
 	place-items: center;
+	background: rgba(0, 0, 0, 0.5);
+	
+	
 }
 
 .popup-content {
 	background-color: #fff;
 	padding: 20px;
-	width: 80%;
-	top: 30%;
-	max-width: 30em;
-	max-height: 90%;
 	border-radius: 0.5em;
+	width: 630px;
+	height: 688px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 .close-popup {
-	top: 1em;
-	right: 1em;
 	cursor: pointer;
-
-	
+	margin-left: auto;
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 1em;
 }
 .popup-title{
 	text-align: center;
-	font-size: 16px;
+	font-size: 26px;
+	margin-bottom: 2em;
 }
 .popup-gallery {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	grid-template-rows: repeat(3,auto);
-	margin-top: 20px;
+	grid-column-gap: 20px;
+	grid-row-gap: 40px;
 	width: fit-content;
 }
 
 .popup-gallery img {
 	object-fit: cover;
-	max-width: 5em;
-	max-height: 5em;
-	margin: 10px;
+	max-width: 76px;
+	max-height: 102px;
+}
+
+.popup-line {
+	height: 2px;
+	display: block;
+	margin: 20px 0;
+	background-color: #B3B3B3;
+	width: 73%;
+	margin-bottom: 0.5em;
+	margin-top: 4.5em;
 }
 
 .popup-content button {
@@ -237,7 +252,9 @@ li:hover {
 	cursor: pointer;
 	border-radius: 2em;
 	margin-top: 3em;
-	padding: 1em 3em;
+	padding: 1em 5em;
+	font-size: 14px;
+	font-family: 'Syne';
 }
 
 #contact {
@@ -286,6 +303,6 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
 }
 

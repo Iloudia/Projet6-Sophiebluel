@@ -98,14 +98,11 @@ li:hover {
 .login {
     text-align: center;
     padding: 8em;
-    
 }
 
 .login h2 {
 margin-bottom: 1.5em;
 font-size: 3em;
-
-
 } 
 
 
@@ -118,8 +115,6 @@ font-size: 3em;
 .login-form label {
     margin-bottom: 5px;
     margin-right: 28em;
-    
-
 }
 .login-form input[type="email"],
 .login-form input[type="password"] {

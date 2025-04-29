@@ -88,12 +88,17 @@ function populatePopupGallery() {
 
 const addPhotoButton = document.getElementById('add-photo-button');
 const popupGalleryPage = document.getElementById('popup-gallery-page');
-const popupAddPhotopage = document.getElementById('popup-add-photo-page');
+const popupAddPhotoPage = document.getElementById('popup-add-photo-page');
+const returnArrow = document.getElementById('arrow-return');
 
 addPhotoButton.addEventListener('click', function() {
+    popupAddPhotoPage.classList.remove('hidden');
     popupGalleryPage.classList.add('hidden');
-    popupAddPhotopage.classList.remove('hidden');
+    returnArrow.style.display = 'inline';
 });
 
-
-
+returnArrow.addEventListener('click', function(){
+    popupGalleryPage.classList.remove('hidden');
+    popupAddPhotoPage.classList.add('hidden');
+    returnArrow.style.display = 'inline';
+});

@@ -70,30 +70,67 @@
 	</section>
 </main>
 
-<div id="popup" class="popup-container hidden">
-	<div class="popup-content">
-		<span class="close-popup">&times;</span>
-		<h3 class="popup-title">Galerie photo</h3>
-		<div class="popup-gallery" id="popup-gallery">
-		</div>
-		<div class="popup-line"></div>
-		<button>Ajouter une photo</button>
-	</div>
-</div>
 
-<div id="popup-add-photo-page hidden" >
+
+
+
+
+
+<div id="popup" class="popup-container hidden">
+
+	<div class="popup-content">
+		<div class="popup-header">
+			<i id="arrow-return" class="fa-solid fa-arrow-left"></i>
+			<span class="close-popup">&times;</span>
+		</div>
+		
+		<div id="popup-gallery-page">
+			<h3 class="popup-title">Galerie photo</h3>
+			<div class="popup-gallery" id="popup-gallery"></div>
+			<div class="popup-line"></div>
+			<div class="button-container">
+			<button id="add-photo-button">Ajouter une photo</button>
+			</div>
+			
+		</div>
+
+<div id="popup-add-photo-page" class="hidden">
+		
 	<h3 class="popup-title">Ajout photo</h3>
+
+	<div class="upload-container">
+		<label for="photo-upload" class="upload-label">
+			<i class="fa-regular fa-image"></i>
+			<p>+Ajouter une photo</p>
+			<span>jpg, png : 4mo max</span>
+		</label>
+		<input type="file" id="photo-upload" name="photo-upload" accept="image/*" class="hidden">
+	</div>
+
 	<form id="add-photo-form">
 		<div class="form-container">
 			<label for="photo-title">Titre</label>
 			<input type="text" id="photo-title" name="photo-title" required>
 		</div>
 
-		<div class="form-group">
+		<div class="form-container">
 			<label for="photo-category">Catégorie</label>
-			
+			<select id="photo-category" name="photo-category" required>
+				<option value="" selected hidden></option>
+				<option value="Objets">Objets</option>
+				<option value="Appartements">Appartements</option>
+				<option value="Hotels & Restaurants">Hotels & Restaurants</option>
+			</select>
 		</div>
+
+		<div class="popup-line"></div>
+		<div class="button-container">
+		<button type="submit">Valider</button>
+		</div>
+		
 	</form>
+	</div>
+</div>
 </div>
 
 

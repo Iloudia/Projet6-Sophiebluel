@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (response.ok) {
-                localStorage.setItem('token', data.token);
+                sessionStorage.setItem('token', data.token);
                 window.location.href = 'index.html';
             } else {
                 showError("Erreur dans l’identifiant ou le mot de passe");

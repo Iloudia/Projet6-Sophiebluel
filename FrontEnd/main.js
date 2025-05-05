@@ -3,17 +3,31 @@ const buttons = document.querySelectorAll('.filter-button');
 const gallery = document.querySelector('.gallery');
 const editButton = document.getElementById('edit-button');
 const filters = document.querySelector('.filters');
+const token = sessionStorage.getItem('token');
 
 document.addEventListener('DOMContentLoaded', () => {
+    const loginLink = document.getElementById('login-link');
 
-    const token = localStorage.getItem('token');
     if (token) {
         editButton.style.display = 'inline-flex';
         filters.style.display = 'none';
+        loginLink.textContent = 'Logout';
     } else {
         editButton.style.display = 'none';
         filters.style.display = 'flex';
+        loginLink.textContent = 'Login';
     }
+    
+    loginLink.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        if (!token) {
+            window.location.href = 'login.html';
+        } else {
+            sessionStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+    });
     getWorks();
 });
 
@@ -21,6 +35,7 @@ const getWorks = async () => {
     const response = await fetch ('http://localhost:5678/api/works');
     works = await response.json();
     displayWorks();
+    populatePopupGallery();
 };
 
 
@@ -75,15 +90,33 @@ closePopup.addEventListener('click', () => {
 
 function populatePopupGallery() {
     popupGallery.innerHTML = '';
-    if (typeof works !== 'undefined') {
-        works.forEach(work => {
+    
+        works.forEach((work) => {
             const img = document.createElement('img');
             img.src = work.imageUrl;
             img.alt = work.title;
             popupGallery.appendChild(img);
+
+            const suppBtn = document.createElement('span');
+            suppBtn.className = 'supp-btn';
+            suppBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+            suppBtn.addEventListener('click', async () => {
+
+                const response = await fetch (`http://localhost:5678/api/works/${work.id}`, {
+                    method: 'Delete',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.ok) {
+                    getWorks();
+                    populatePopupGallery();
+                }
+            });
+
+            popupGallery.appendChild(suppBtn);
         });
     }
-}
 
 
 const addPhotoButton = document.getElementById('add-photo-button');
@@ -100,5 +133,4 @@ addPhotoButton.addEventListener('click', function() {
 returnArrow.addEventListener('click', function(){
     popupGalleryPage.classList.remove('hidden');
     popupAddPhotoPage.classList.add('hidden');
-    returnArrow.style.display = 'inline';
 });

@@ -148,7 +148,8 @@ li:hover {
 }
 
 .filters {
-	text-align: center;
+	display: flex;
+	justify-content: center;
 	margin-top: 5em;
 }
 
@@ -218,6 +219,7 @@ li:hover {
 	right: 0;
 	position: absolute;
 }
+
 
 #arrow-return {
 	display: none;

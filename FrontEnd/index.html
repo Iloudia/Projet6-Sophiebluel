@@ -72,11 +72,6 @@
 	</main>
 
 
-
-
-
-
-
 	<div id="popup" class="popup-container hidden">
 
 		<div class="popup-content">
@@ -106,6 +101,7 @@
 				<span>jpg, png : 4mo max</span>
 			</label>
 			<input type="file" id="photo-upload" name="photo-upload" accept="image/*" class="hidden">
+			<img id="photo-preview" alt="Aperçu de l’image" class="hidden" src=""/>
 		</div>
 
 		<form id="add-photo-form">
@@ -118,9 +114,9 @@
 				<label for="photo-category">Catégorie</label>
 				<select id="photo-category" name="photo-category" required>
 					<option value="" selected hidden></option>
-					<option value="Objets">Objets</option>
-					<option value="Appartements">Appartements</option>
-					<option value="Hotels & Restaurants">Hotels & Restaurants</option>
+					<option value="1">Objets</option>
+					<option value="2">Appartements</option>
+					<option value="3">Hotels &amp; Restaurants</option>
 				</select>
 			</div>
 

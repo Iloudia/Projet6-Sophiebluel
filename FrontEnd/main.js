@@ -90,34 +90,46 @@ closePopup.addEventListener('click', () => {
 
 function populatePopupGallery() {
     popupGallery.innerHTML = '';
-    
-        works.forEach((work) => {
-            const img = document.createElement('img');
-            img.src = work.imageUrl;
-            img.alt = work.title;
-            popupGallery.appendChild(img);
 
-            const suppBtn = document.createElement('span');
-            suppBtn.className = 'supp-btn';
-            suppBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-            suppBtn.addEventListener('click', async () => {
+    works.forEach((work) => {
+        const item = document.createElement('div');
+        item.className = 'popup-item';
 
-                const response = await fetch (`http://localhost:5678/api/works/${work.id}`, {
-                    method: 'Delete',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+        const img = document.createElement('img');
+        img.src  = work.imageUrl;
+        img.alt  = work.title;
+        item.appendChild(img);
+
+        const suppBtn = document.createElement('span');
+        suppBtn.className = 'supp-btn';
+        suppBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+        suppBtn.addEventListener('click', async () => {
+            const confirmation = confirm("Etes-vous sûr de vouloir supprimer cette photo ?");
+            if (!confirmation) return;
+
+            try {
+                const response = await fetch(`http://localhost:5678/api/works/${work.id}`, {
+                    method:  'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (response.ok) {
-                    getWorks();
+                    await getWorks();
                     populatePopupGallery();
+                } else {
+                    alert("Erreur lors de la suppression de la photo");
                 }
-            });
 
-            popupGallery.appendChild(suppBtn);
+            } catch (error) {
+                console.error("Erreur : ", error);
+                alerte("Une erreur s'est produite");
+            }
+           
         });
-    }
+        item.appendChild(suppBtn);
 
+        popupGallery.appendChild(item);
+    });
+}
 
 const addPhotoButton = document.getElementById('add-photo-button');
 const popupGalleryPage = document.getElementById('popup-gallery-page');
@@ -133,4 +145,74 @@ addPhotoButton.addEventListener('click', function() {
 returnArrow.addEventListener('click', function(){
     popupGalleryPage.classList.remove('hidden');
     popupAddPhotoPage.classList.add('hidden');
+});
+
+const photoUploadInput = document.getElementById('photo-upload');
+const photoPreview = document.getElementById('photo-preview');
+const addPhotoForm = document.getElementById('add-photo-form');
+const photoTitleInput = document.getElementById('photo-title');
+const photoCategoryInput = document.getElementById('photo-category');
+
+
+
+function updatePhotoPreview(file) {
+    const previewUrl = URL.createObjectURL(file);
+    photoPreview.src = previewUrl;
+    photoPreview.classList.remove('hidden');
+    photoPreview.classList.add('visible');
+    document.querySelector('.upload-label').style.display = 'none';
+}
+
+photoUploadInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        updatePhotoPreview(file);
+    }
+});
+
+photoPreview.addEventListener('click', function() {
+    photoUploadInput.value = '';
+    photoUploadInput.click();
+});
+
+addPhotoForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const file     = photoUploadInput.files[0];
+    const title    = photoTitleInput.value.trim();
+    const category = photoCategoryInput.value;
+
+    if (!title || !category || !file) {
+        alert('Tous les champs sont nécessaires');
+        return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+        alert('Image trop lourde (4 Mo max)');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image',    file);
+    formData.append('title',    title);
+    formData.append('category', Number(category));
+    try {
+        const response = await fetch('http://localhost:5678/api/works', {
+            method:  'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body:    formData
+        });
+
+        if (!response.ok) {
+            const err = await response.json().catch(() => ({ message: 'Erreur inconnue' }));
+            throw new Error(`${response.status} – ${err.message || response.statusText}`);
+        }
+        await getWorks();
+        popupAddPhotoPage.classList.add('hidden');
+        popupGalleryPage.classList.remove('hidden');
+        addPhotoForm.reset();
+        photoPreview.classList.add('hidden');
+    } catch (err) {
+        console.error(err);
+        alert("Erreur dans l'ajout de la photo");
+    }
 });

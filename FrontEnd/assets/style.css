@@ -92,9 +92,13 @@ nav ul {
 
 }
 nav li {
-	padding: 0 10px;
+	padding: 0 20px;
 	font-size: 1.2em;
 	cursor: pointer;
+}
+.logo-instagram {
+	width: 24px;
+	height: auto;
 }
 
 li:hover {
@@ -149,7 +153,8 @@ li:hover {
 .filters {
 	display: flex;
 	justify-content: center;
-	margin-top: 5em;
+	margin-top: 2.5em;
+	margin-bottom: 5em;
 }
 
 .filter-button {
@@ -190,6 +195,7 @@ li:hover {
 	inset: 0;
 	place-items: center;
 	background: rgba(0, 0, 0, 0.5);
+	padding-top: 100px;
 }
 
 .popup-content {
@@ -216,6 +222,7 @@ li:hover {
 	font-weight: bold;
 	padding: 0 1em;
 	right: 0;
+	top: 0.5em;
 	position: absolute;
 }
 
@@ -225,6 +232,8 @@ li:hover {
 	cursor: pointer;
 	font-size: 21px;
 	padding: 0 1em;
+	top: 0.5em;
+	position: absolute;
 }
 
 

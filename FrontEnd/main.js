@@ -4,38 +4,43 @@ const gallery = document.querySelector('.gallery');
 const editButton = document.getElementById('edit-button');
 const filters = document.querySelector('.filters');
 const token = sessionStorage.getItem('token');
+let categories = [];
 
-document.addEventListener('DOMContentLoaded', () => {
-    const loginLink = document.getElementById('login-link');
-
-    if (token) {
-        editButton.style.display = 'inline-flex';
-        filters.style.display = 'none';
-        loginLink.textContent = 'Logout';
-    } else {
-        editButton.style.display = 'none';
-        filters.style.display = 'flex';
-        loginLink.textContent = 'Login';
-    }
-    
-    loginLink.addEventListener('click', (event) => {
-        event.preventDefault();
-
-        if (!token) {
-            window.location.href = 'login.html';
-        } else {
-            sessionStorage.removeItem('token');
-            window.location.href = 'index.html';
+const getCategories = async () => {
+    try {
+        const response = await fetch('http://localhost:5678/api/categories');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
-    });
-    getWorks();
-});
 
-const getWorks = async () => {
-    const response = await fetch ('http://localhost:5678/api/works');
-    works = await response.json();
-    displayWorks();
-    populatePopupGallery();
+        categories = await response.json();
+        generateFiltersButtons();
+    } catch (error) {
+        console.error('Erreur lors de la récupération des catégories:', error);
+    }
+};
+
+const generateFiltersButtons = () => {
+    filters.innerHTML = '';
+
+    const allCategory = { id: 0, name: "Tous" };
+    categories.unshift(allCategory); 
+
+    categories.forEach(category => {
+        const button = document.createElement('button');
+        button.classList.add('filter-button');
+        button.setAttribute('data-category', category.id);
+        button.textContent = category.name;
+
+        
+        if (category.id === 0) {
+            button.classList.add('active');
+        }
+
+        filters.appendChild(button);
+    });
+
+    setupFilters();
 };
 
 
@@ -54,8 +59,8 @@ const displayWorks = () => {
     setupFilters();
 };
 
-
 const setupFilters = () => {
+    const buttons = document.querySelectorAll('.filter-button');
     const figures = document.querySelectorAll('.gallery figure');
     buttons.forEach(button => {
         button.addEventListener('click', () => {
@@ -76,8 +81,65 @@ const setupFilters = () => {
 });
 };
 
+const getWorks = async () => {
+    try {
+        const response = await fetch ('http://localhost:5678/api/works');
+        works = await response.json();
+        displayWorks();
+        setupFilters();
+    } catch (error) {
+        console.error('Erreur', error);
+    }
+};
+
+const categoryDropdown = (categories)  =>  {
+    const photoCategoryInput = document.getElementById('photo-category');
+    photoCategoryInput.innerHTML = `<option value="" selected hidden> </option>`;
+
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        photoCategoryInput.appendChild(option);
+    });
+};
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const loginLink = document.getElementById('login-link');
+
+    if (token) {
+        editButton.style.display = 'inline-flex';
+        filters.style.display = 'none';
+        loginLink.textContent = 'logout';
+    } else {
+        editButton.style.display = 'none';
+        filters.style.display = 'flex';
+        loginLink.textContent = 'login';
+    }
+    
+    loginLink.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        if (!token) {
+            window.location.href = 'login.html';
+        } else {
+            sessionStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+    });
+    generateFiltersButtons();
+    getWorks();
+    getCategories();
+});
+
 const popup = document.getElementById('popup');
 const closePopup = document.querySelector('.close-popup');
+popup.addEventListener('click', (e) => {
+    if (e.target === popup) {
+        popup.classList.add('hidden');
+    }
+});
 const popupGallery = document.getElementById('popup-gallery');
 editButton.addEventListener('click', () => {
     popup.classList.remove('hidden');
@@ -145,6 +207,7 @@ addPhotoButton.addEventListener('click', function() {
 returnArrow.addEventListener('click', function(){
     popupGalleryPage.classList.remove('hidden');
     popupAddPhotoPage.classList.add('hidden');
+    returnArrow.style.display = 'none';
 });
 
 const photoUploadInput = document.getElementById('photo-upload');

@@ -15,6 +15,12 @@ const getCategories = async () => {
 
         categories = await response.json();
         generateFiltersButtons();
+
+        const photoCategoryInput = document.getElementById('photo-category');
+        if (photoCategoryInput) {
+            categoryDropdown(categories);
+        }
+        
     } catch (error) {
         console.error('Erreur lors de la récupération des catégories:', error);
     }
@@ -97,10 +103,12 @@ const categoryDropdown = (categories)  =>  {
     photoCategoryInput.innerHTML = `<option value="" selected hidden> </option>`;
 
     categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.id;
-        option.textContent = category.name;
-        photoCategoryInput.appendChild(option);
+        if (category.id !== 0) {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            photoCategoryInput.appendChild(option);
+        }
     });
 };
 
@@ -241,8 +249,8 @@ photoPreview.addEventListener('click', function() {
 addPhotoForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const file     = photoUploadInput.files[0];
-    const title    = photoTitleInput.value.trim();
+    const file = photoUploadInput.files[0];
+    const title = photoTitleInput.value.trim();
     const category = photoCategoryInput.value;
 
     if (!title || !category || !file) {

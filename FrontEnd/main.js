@@ -6,6 +6,7 @@ const filters = document.querySelector('.filters');
 const token = sessionStorage.getItem('token');
 let categories = [];
 
+// Récupération des catégories depuis l'API 
 const getCategories = async () => {
     try {
         const response = await fetch('http://localhost:5678/api/categories');
@@ -25,6 +26,8 @@ const getCategories = async () => {
         console.error('Erreur lors de la récupération des catégories:', error);
     }
 };
+
+// Génération des boutons filtres 
 
 const generateFiltersButtons = () => {
     filters.innerHTML = '';
@@ -49,6 +52,7 @@ const generateFiltersButtons = () => {
     setupFilters();
 };
 
+// Affichage des travaux dans la galerie 
 
 const displayWorks = () => {
     gallery.innerHTML = '';
@@ -64,6 +68,8 @@ const displayWorks = () => {
     });
     setupFilters();
 };
+
+// Gestion des filtres 
 
 const setupFilters = () => {
     const buttons = document.querySelectorAll('.filter-button');
@@ -83,9 +89,11 @@ const setupFilters = () => {
         buttons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
 
-});
-});
+        });
+    });
 };
+
+// Récuperation des travaux depuis l'API 
 
 const getWorks = async () => {
     try {
@@ -97,6 +105,8 @@ const getWorks = async () => {
         console.error('Erreur', error);
     }
 };
+
+// Création des options du dropdown catégories
 
 const categoryDropdown = (categories)  =>  {
     const photoCategoryInput = document.getElementById('photo-category');
@@ -112,6 +122,7 @@ const categoryDropdown = (categories)  =>  {
     });
 };
 
+// Gestion du login/logout
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginLink = document.getElementById('login-link');
@@ -163,8 +174,6 @@ function populatePopupGallery() {
 
     works.forEach((work) => {
         const item = document.createElement('div');
-        item.className = 'popup-item';
-
         const img = document.createElement('img');
         img.src  = work.imageUrl;
         img.alt  = work.title;
@@ -201,6 +210,8 @@ function populatePopupGallery() {
     });
 }
 
+// Gestion de l'ajout de photo dans le popup
+
 const addPhotoButton = document.getElementById('add-photo-button');
 const popupGalleryPage = document.getElementById('popup-gallery-page');
 const popupAddPhotoPage = document.getElementById('popup-add-photo-page');
@@ -224,7 +235,7 @@ const addPhotoForm = document.getElementById('add-photo-form');
 const photoTitleInput = document.getElementById('photo-title');
 const photoCategoryInput = document.getElementById('photo-category');
 
-
+// Mise à jour de la prévisualisation de la photo
 
 function updatePhotoPreview(file) {
     const previewUrl = URL.createObjectURL(file);
@@ -241,11 +252,13 @@ photoUploadInput.addEventListener('change', function(e) {
     }
 });
 
+// Réinitialisation de la prévisualisation lorsqu'on clique dessus
 photoPreview.addEventListener('click', function() {
     photoUploadInput.value = '';
     photoUploadInput.click();
 });
 
+// Soumission d'ajout de la photo
 addPhotoForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -253,6 +266,7 @@ addPhotoForm.addEventListener('submit', async (e) => {
     const title = photoTitleInput.value.trim();
     const category = photoCategoryInput.value;
 
+// Vérification de tous les champs 
     if (!title || !category || !file) {
         alert('Tous les champs sont nécessaires');
         return;
@@ -262,6 +276,7 @@ addPhotoForm.addEventListener('submit', async (e) => {
         return;
     }
 
+    // Création de l'objet formData
     const formData = new FormData();
     formData.append('image',    file);
     formData.append('title',    title);
@@ -277,11 +292,20 @@ addPhotoForm.addEventListener('submit', async (e) => {
             const err = await response.json().catch(() => ({ message: 'Erreur inconnue' }));
             throw new Error(`${response.status} – ${err.message || response.statusText}`);
         }
+
+        returnArrow.style.display = 'none';
+        photoPreview.classList.remove('visible');
+        photoPreview.classList.add('hidden');
         await getWorks();
+        populatePopupGallery();
+
         popupAddPhotoPage.classList.add('hidden');
         popupGalleryPage.classList.remove('hidden');
         addPhotoForm.reset();
-        photoPreview.classList.add('hidden');
+        photoPreview.src = '';
+        document.querySelector('.upload-label').style.display = 'flex';
+
+
     } catch (err) {
         console.error(err);
         alert("Erreur dans l'ajout de la photo");

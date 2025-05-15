@@ -14,6 +14,8 @@
 
 	</head>
 	<body>
+
+	<!-- Header -->
 	<header>
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
@@ -27,6 +29,7 @@
 		</nav>
 	</header>
 	<main>
+	<!-- Section introduction -->
 		<section id="introduction">
 			<figure>
 				<img src="./assets/images/sophie-bluel.png" alt="">
@@ -38,6 +41,7 @@
 				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 			</article>
 		</section>
+		<!-- Section portfolio -->
 		<section id="portfolio">
 			<div class="portfolio-title">
 			<h2>Mes Projets</h2>
@@ -52,6 +56,7 @@
 			
 			</div>
 		</section>
+		<!-- Section contact -->
 		<section id="contact">
 			<h2>Contact</h2>
 			<p>Vous avez un projet ? Discutons-en !</p>
@@ -66,7 +71,7 @@
 			</form>
 		</section>
 	</main>
-
+    <!-- Popup -->
 
 	<div id="popup" class="popup-container hidden">
 
@@ -90,7 +95,10 @@
 			
 		<h3 class="popup-title">Ajout photo</h3>
 
-		<div class="upload-container">
+		
+
+		<form id="add-photo-form">
+			<div class="upload-container">
 			<label for="photo-upload" class="upload-label">
 				<i class="fa-regular fa-image"></i>
 				<p>+Ajouter une photo</p>
@@ -99,8 +107,7 @@
 			<input type="file" id="photo-upload" name="photo-upload" accept="image/*" class="hidden">
 			<img id="photo-preview" alt="Aperçu de l’image" class="hidden" src=""/>
 		</div>
-
-		<form id="add-photo-form">
+		
 			<div class="form-container">
 				<label for="photo-title">Titre</label>
 				<input type="text" id="photo-title" name="photo-title" required>
@@ -123,7 +130,7 @@
 	</div>
 	</div>
 
-
+	<!-- Footer -->
 
 	<footer>
 		<nav>

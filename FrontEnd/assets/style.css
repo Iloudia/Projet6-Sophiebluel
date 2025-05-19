@@ -391,6 +391,15 @@ margin-bottom: 1em;
 	display: block;
 }
 
+#submit-button {
+	background-color: #A7A7A7;
+	cursor: not-allowed;
+}
+#submit-button.active {
+	background-color: #1D6154;
+	cursor: pointer;
+}
+
 #contact {
 	width: 50%;
 margin: auto;

@@ -106,7 +106,7 @@ const getWorks = async () => {
     }
 };
 
-// Création des options du dropdown catégories
+// Création des otpions du menu déroulant pour les catégories
 
 const categoryDropdown = (categories)  =>  {
     const photoCategoryInput = document.getElementById('photo-category');
@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     getCategories();
 });
 
+// gestion du popup
 const popup = document.getElementById('popup');
 const closePopup = document.querySelector('.close-popup');
 popup.addEventListener('click', (e) => {
@@ -169,6 +170,7 @@ closePopup.addEventListener('click', () => {
     popup.classList.add('hidden');
 });
 
+// remplissage de la galerie dans le popup
 function populatePopupGallery() {
     popupGallery.innerHTML = '';
 
@@ -177,6 +179,7 @@ function populatePopupGallery() {
         const img = document.createElement('img');
         img.src  = work.imageUrl;
         img.alt  = work.title;
+        item.classList.add('popup-item');
         item.appendChild(img);
 
         const suppBtn = document.createElement('span');
@@ -234,31 +237,67 @@ const photoPreview = document.getElementById('photo-preview');
 const addPhotoForm = document.getElementById('add-photo-form');
 const photoTitleInput = document.getElementById('photo-title');
 const photoCategoryInput = document.getElementById('photo-category');
+const submitButton = document.getElementById('submit-button');
+const uploadLabel = document.querySelector('.upload-label');
 
-// Mise à jour de la prévisualisation de la photo
-
-function updatePhotoPreview(file) {
-    const previewUrl = URL.createObjectURL(file);
-    photoPreview.src = previewUrl;
-    photoPreview.classList.remove('hidden');
-    photoPreview.classList.add('visible');
-    document.querySelector('.upload-label').style.display = 'none';
-}
-
+// Gestion de la prévisualisation de l'image
 photoUploadInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
+    console.log('File selected:', file);
+
     if (file) {
-        updatePhotoPreview(file);
+        if (!file.type.startsWith('image/')) {
+            alert('Veuillez sélectionner une image valide (jpg, png).');
+            photoUploadInput.value = '';
+            return;
+        }
+
+        if (file.size > 4 * 1024 * 1024) {
+            alert('L’image est trop lourde (4 Mo max).');
+            photoUploadInput.value = '';
+            return;
+        }
+
+        const previewUrl = URL.createObjectURL(file);
+        console.log('Preview URL:', previewUrl);
+        photoPreview.src = previewUrl;
+        photoPreview.classList.add('visible');
+        photoPreview.classList.remove('hidden');
+        uploadLabel.style.display = 'none';
+    } else {
+        console.log('No file selected');
+        photoPreview.src = '';
+        photoPreview.classList.add('hidden');
+        photoPreview.classList.remove('visible');
+        uploadLabel.style.display = 'flex';
     }
+    checkform();
 });
 
-// Réinitialisation de la prévisualisation lorsqu'on clique dessus
 photoPreview.addEventListener('click', function() {
-    photoUploadInput.value = '';
-    photoUploadInput.click();
+        photoUploadInput.value = '';
+        photoUploadInput.click();
 });
 
-// Soumission d'ajout de la photo
+function checkform() {
+    const title = photoTitleInput.value.trim();
+    const category = photoCategoryInput.value;
+    const file = photoUploadInput.files[0];
+
+    if (title && category && file) {
+        submitButton.classList.add('active');
+        submitButton.disabled = false;
+    } else {
+        submitButton.classList.remove('active');
+        submitButton.disabled = true;
+    }
+}
+
+[photoTitleInput, photoCategoryInput, photoUploadInput].forEach(input => {
+    input.addEventListener('input', checkform);
+});
+
+// Soumission du formulaire d'ajout de photo
 addPhotoForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -266,7 +305,7 @@ addPhotoForm.addEventListener('submit', async (e) => {
     const title = photoTitleInput.value.trim();
     const category = photoCategoryInput.value;
 
-// Vérification de tous les champs 
+
     if (!title || !category || !file) {
         alert('Tous les champs sont nécessaires');
         return;
@@ -276,7 +315,7 @@ addPhotoForm.addEventListener('submit', async (e) => {
         return;
     }
 
-    // Création de l'objet formData
+   
     const formData = new FormData();
     formData.append('image',    file);
     formData.append('title',    title);
